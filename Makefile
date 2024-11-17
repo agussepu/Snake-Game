@@ -1,18 +1,22 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -g
+CFLAGS = -Wall -Wextra -g -Iinclude
 LIBS = -lSDL2
 
-SRCS = main.c grid.c snake.c apple.c score.c ranking.c events.c
-OBJS = $(SRCS:.c=.o)
+SRCDIR = src
+INCDIR = include
+BUILD_DIR = build
+
+SRCS = $(wildcard $(SRCDIR)/*.c)
+OBJS = $(patsubst $(SRCDIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
 EXEC = snake_game
 
 all: $(EXEC)
 
 $(EXEC): $(OBJS)
-	$(CC) $(CFLAGS) -o $(EXEC) $(OBJS) $(LIBS)
+	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBS)
 
-%.o: %.c
+$(BUILD_DIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS) $(EXEC)
+	rm -f $(BUILD_DIR)/*.o $(EXEC)
