@@ -1,10 +1,13 @@
 # Objetivos Básicos
-
+    [] Funcionamiento basico del juego (colosion,manzana,serpiente)
+    [] Saludar al jugador por su nombre
+    [] Presentar cosigna del juego al empezar
+    [] Mostrar ranking de jugadores al perder hasta que se presione una tecla
 
 ---
 # Objetivos Generales
-
-
+    [] ...
+    
 ---
 # Disposición Archivos Ideal
 project/

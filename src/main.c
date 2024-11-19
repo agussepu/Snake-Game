@@ -3,6 +3,10 @@
 #include "events.h"
 
 int main() {
+
+    init_snake();
+    increase_snake();
+
     SDL_Window *window;
     SDL_Renderer *renderer;
 
@@ -48,11 +52,16 @@ int main() {
         SDL_RenderClear(renderer);
 
         // Dibujar el tablero
+        move_snake();
+
         render_grid(renderer, grid_x, grid_y);
+        render_snake(renderer, grid_x, grid_y);
 
         // Actualizar pantalla
         SDL_SetRenderDrawColor(renderer, 0x11, 0x11, 0x11, 255); // Color de fondo
         SDL_RenderPresent(renderer);
+
+        SDL_Delay(200);
     }
 
     // Liberar recursos
