@@ -1,73 +1,124 @@
-#include "snake.h"
-#include "grid.h"
-#include "events.h"
+#include "graphics.h"
+#include "game.logic.h"
+
+// Librerias Generales
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 int main() {
+    srand(time(NULL));
 
-    init_snake();
-    increase_snake();
-
-    SDL_Window *window;
-    SDL_Renderer *renderer;
-
-    // Inicializar SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        fprintf(stderr, "Error al inicializar SDL: %s\n", SDL_GetError());
-        return -1;
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        printf("Error initializing SDL: %s\n", SDL_GetError());
+        return 1;
     }
 
-    // Crear la ventana
-    window = SDL_CreateWindow(
-        "SnakeTable",
-        WINDOW_X,
-        WINDOW_Y,
+    SDL_Window *window = SDL_CreateWindow(
+        "Snake Game",
+        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED,
         WINDOW_WIDTH,
         WINDOW_HEIGHT,
-        SDL_WINDOW_BORDERLESS
+        SDL_WINDOW_SHOWN
     );
 
     if (!window) {
-        fprintf(stderr, "Error al crear la ventana: %s\n", SDL_GetError());
+        printf("Error creating window: %s\n", SDL_GetError());
         SDL_Quit();
-        return -1;
+        return 1;
     }
 
-    // Crear el renderer
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    SDL_Renderer *renderer = SDL_CreateRenderer(
+        window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
+    );
+
     if (!renderer) {
-        fprintf(stderr, "Error al crear el renderer: %s\n", SDL_GetError());
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return -1;
+        printf("Error creating renderer: %s\n", SDL_GetError());
+        cleanup(window, NULL);
+        return 1;
     }
 
-    // Centramos el grid en la pantalla
-    int grid_x = (WINDOW_WIDTH / 2) - (GRID_DIM / 2);
-    int grid_y = (WINDOW_HEIGHT / 2) - (GRID_DIM / 2);
+    // Calculamos el desplazamiento para centrar el tablero
+    int offset_x = (WINDOW_WIDTH - WINDOW_GRID_WIDTH) / 2;
+    int offset_y = (WINDOW_HEIGHT - WINDOW_GRID_HEIGHT) / 2;
 
-    // Bucle principal
-    bool quit = false;
-    while (!quit) {
-        quit = !handle_events(); // Manejo de eventos
+    Point snake[100];
+    int snake_length = 5;
+    for (int i = 0; i < snake_length; i++) {
+        snake[i].x = 10 - i;
+        snake[i].y = 10;
+    }
+
+    int dir_x = 1, dir_y = 0;
+    Point food = generate_food(snake, snake_length);
+    int score = 0;
+
+    int running = 1;
+    SDL_Event event;
+
+    // Bucle Principal
+    while (running) {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                running = 0;
+            } else if (event.type == SDL_KEYDOWN) {
+                switch (event.key.keysym.sym) {
+                    case SDLK_ESCAPE:
+                        running = 0;
+                        break; // Exit with ESC
+                    case SDLK_UP:
+                        if (dir_y == 0) { dir_x = 0; dir_y = -1; }
+                        break;
+                    case SDLK_DOWN:
+                        if (dir_y == 0) { dir_x = 0; dir_y = 1; }
+                        break;
+                    case SDLK_LEFT:
+                        if (dir_x == 0) { dir_x = -1; dir_y = 0; }
+                        break;
+                    case SDLK_RIGHT:
+                        if (dir_x == 0) { dir_x = 1; dir_y = 0; }
+                        break;
+                }
+            }
+        }
+
+        for (int i = snake_length - 1; i > 0; i--) {
+            snake[i] = snake[i - 1];
+        }
+        snake[0].x += dir_x;
+        snake[0].y += dir_y;
+
+        if (snake[0].x < 0 || snake[0].x >= (WINDOW_GRID_WIDTH / CELL_SIZE) ||
+            snake[0].y < 0 || snake[0].y >= (WINDOW_GRID_HEIGHT / CELL_SIZE)) {
+            printf("Game Over! You hit the wall.\nFinal Score: %d\n", score);
+            break;
+        }
+
+        if (check_collision(snake, snake_length)) {
+            printf("Game Over! You hit yourself.\nFinal Score: %d\n", score);
+            break;
+        }
+
+        if (snake[0].x == food.x && snake[0].y == food.y) {
+            snake_length++;
+            score++;
+            food = generate_food(snake, snake_length);
+            printf("Score: %d\n", score);
+        }
+
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Black
         SDL_RenderClear(renderer);
 
-        // Dibujar el tablero
-        move_snake();
+        draw_grid(renderer, offset_x, offset_y);
+        draw_snake(renderer, snake, snake_length, offset_x, offset_y);
+        draw_food(renderer, food, offset_x, offset_y);
 
-        render_grid(renderer, grid_x, grid_y);
-        render_snake(renderer, grid_x, grid_y);
-
-        // Actualizar pantalla
-        SDL_SetRenderDrawColor(renderer, 0x11, 0x11, 0x11, 255); // Color de fondo
         SDL_RenderPresent(renderer);
 
-        SDL_Delay(200);
+        SDL_Delay(120);
     }
 
-    // Liberar recursos
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-
+    cleanup(window, renderer);
     return 0;
 }
