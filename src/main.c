@@ -9,12 +9,19 @@
 int main() {
     srand(time(NULL));
 
+    // Consigna del juego y nombre usuario  
     welcome();
 
-    //Iniciar bucle para volver a jugar
-    int again = 1;
+    int again = 1; // Indicardor para continuar jugando
+
+    //Bucle Principal para jugar varias veces
     while(again)
     {
+        //Espera antes de empezar;
+        printf("El juego ya esta por comenzar preparate...\n");
+        SDL_Delay(2000); // Pausa de 1000 ms (1 segundo)
+
+        //
         if (SDL_Init(SDL_INIT_VIDEO) != 0) {
             printf("Error initializing SDL: %s\n", SDL_GetError());
             return 1;
@@ -50,6 +57,7 @@ int main() {
         int offset_y = (WINDOW_HEIGHT - WINDOW_GRID_HEIGHT) / 2;
 
         Point snake[100];
+        
         int snake_length = 8;
         for (int i = 0; i < snake_length; i++) {
             snake[i].x = 10 - i;
@@ -62,8 +70,8 @@ int main() {
 
         int running = 1;
         SDL_Event event;
-
-        // Bucle Principal
+        
+        // Bucle Juego
         while (running) {
             while (SDL_PollEvent(&event)) {
                 if (event.type == SDL_QUIT) {
@@ -142,6 +150,6 @@ int main() {
         
         cleanup(window, renderer);
     }
-    // Creo que esta de mas porque ahora limpio la pantalla ni bien choco
+
     return 0;
 }

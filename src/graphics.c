@@ -25,28 +25,30 @@ int welcome() {
         }
     }
 
+    //Espera un Segundo antes de comenzar
     return 0;
 }
 
 int checkFinish() {
-    char b;
+    char input;
 
-    printf("¿Desea seguir jugando? [Y/n]: ");
-    scanf(" %c", &b); // Espacio para ignorar saltos de línea
+    while (1) {
+        printf("¿Desea seguir jugando? [Y/n]: ");
+        scanf(" %c", &input); // Leer entrada ignorando espacios en blanco
 
-    // Consumir cualquier entrada sobrante
-    while (getchar() != '\n');
+        // Verificar la entrada
+        if (input == 'n' || input == 'N') {
+            return 0; // Terminar juego
+        } else if (input == 'y' || input == 'Y') {
+            return 1; // Continuar juego
+        } else {
+            printf("Entrada no válida. Intenta nuevamente.\n");
+        }
 
-    if (b == 'n' || b == 'N') {
-        return 0; // Finalizar el juego
-    } else if (b == 'y' || b == 'Y') {
-        return 1; // Continuar jugando
-    } else {
-        printf("Entrada no válida. Asumiendo que quieres continuar...\n");
-        return 0;
+        // Consumir cualquier entrada sobrante para evitar errores en la siguiente iteración
+        while (getchar() != '\n');
     }
 }
-
 
 // Limpie las ventanas
 void cleanup(SDL_Window *window, SDL_Renderer *renderer) {
@@ -78,4 +80,4 @@ void draw_snake(SDL_Renderer *renderer, Point *snake, int length, int offset_x, 
         };
         SDL_RenderFillRect(renderer, &rect);
     }
-}
+} 

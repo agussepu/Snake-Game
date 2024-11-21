@@ -23,5 +23,6 @@ void draw_grid(SDL_Renderer *renderer, int offset_x, int offset_y);
 void draw_snake(SDL_Renderer *renderer, Point *snake, int length, int offset_x, int offset_y);
 void cleanup(SDL_Window *window, SDL_Renderer *renderer);
 int checkFinish();
+void wait();
 
 #endif // GRAPHICS_H
