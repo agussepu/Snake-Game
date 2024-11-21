@@ -24,8 +24,8 @@ int main() {
             "Snake Game",
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED,
-            WINDOW_GRID_WIDTH,
-            WINDOW_GRID_HEIGHT,
+            WINDOW_WIDTH,
+            WINDOW_HEIGHT,
             SDL_WINDOW_SHOWN
         );
 
@@ -46,8 +46,8 @@ int main() {
         }
 
         // Calculamos el desplazamiento para centrar el tablero
-        int offset_x = (WINDOW_GRID_WIDTH - WINDOW_GRID_WIDTH) / 2;
-        int offset_y = (WINDOW_GRID_HEIGHT - WINDOW_GRID_HEIGHT) / 2;
+        int offset_x = (WINDOW_WIDTH - WINDOW_GRID_WIDTH) / 2;
+        int offset_y = (WINDOW_HEIGHT - WINDOW_GRID_HEIGHT) / 2;
 
         Point snake[100];
         int snake_length = 8;
@@ -139,8 +139,9 @@ int main() {
             printf("Cerrando SNAKE GAME...\n");
             again = 0;
         }
+        
+        cleanup(window, renderer);
     }
     // Creo que esta de mas porque ahora limpio la pantalla ni bien choco
-    // cleanup(window, renderer);
     return 0;
 }

@@ -28,20 +28,25 @@ int welcome() {
     return 0;
 }
 
-int checkFinish(){
+int checkFinish() {
     char b;
 
-    printf("Desea Seguir jugando? [Y/n]:");
-    scanf(" %c",&b);
+    printf("¿Desea seguir jugando? [Y/n]: ");
+    scanf(" %c", &b); // Espacio para ignorar saltos de línea
+
+    // Consumir cualquier entrada sobrante
+    while (getchar() != '\n');
+
     if (b == 'n' || b == 'N') {
         return 0; // Finalizar el juego
     } else if (b == 'y' || b == 'Y') {
         return 1; // Continuar jugando
     } else {
         printf("Entrada no válida. Asumiendo que quieres continuar...\n");
-        return 1;
+        return 0;
     }
 }
+
 
 // Limpie las ventanas
 void cleanup(SDL_Window *window, SDL_Renderer *renderer) {
