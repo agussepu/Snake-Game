@@ -1,4 +1,43 @@
 #include "graphics.h"
+#include "stdio.h"
+
+int welcome() {
+    char name[20];
+    char selection;
+    int verification = 0;
+
+    printf("-------------------------[SNAKE GAME]------------------------\n");
+    printf("Este juego consiste en ponerte en el papel de una serpiente la cual odia a apple... \n");
+    printf("Por lo que debe aguantar lo más que pueda comiendo manzanas.\n");
+    printf("-------------------------------------------------------------\n");
+    printf("Antes de comenzar, escriba su nombre por favor: ");
+    scanf("%s", name);
+
+    printf("Buena suerte comiendo manzanas %s. Escriba [Y] si quiere comenzar.\n", name);
+
+    while (verification == 0) {
+        printf("Escriba [Y] para comenzar: ");
+        scanf(" %c", &selection); // Nota el espacio antes del %c
+        if (selection == 'Y') { // Compara con comillas simples
+            verification = 1;
+        } else {
+            printf("Ok... parece que aún no estás listo.\n");
+        }
+    }
+
+    return 0;
+}
+
+int checkFinish(){
+    char b;
+
+    printf("Desea Seguir jugando? [Y/n]:");
+    scanf("%c",&b);
+    if(b == 'n'){
+        return 1;
+    }
+    return 0;
+}
 
 // Limpie las ventanas
 void cleanup(SDL_Window *window, SDL_Renderer *renderer) {
