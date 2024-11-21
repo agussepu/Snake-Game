@@ -4,6 +4,10 @@
 #include <SDL2/SDL.h>
 
 // Dimensiones de la ventana
+#define WINDOW_WIDTH 1920
+#define WINDOW_HEIGHT 1080
+
+// Dimensiones del grid
 #define WINDOW_GRID_WIDTH 800
 #define WINDOW_GRID_HEIGHT 600
 #define CELL_SIZE 40

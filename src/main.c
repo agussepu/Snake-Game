@@ -120,7 +120,7 @@ int main() {
                 snake_length++;
                 score++;
                 food = generate_food(snake, snake_length);
-                printf("Score: %d\n", score);
+                //printf("Score: %d\n", score);
             }
 
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Black
@@ -134,10 +134,9 @@ int main() {
 
             SDL_Delay(120);
         }
-
-        printf("traza\n");
         
-        if(checkFinish() == 1){
+        if(checkFinish() == 0){
+            printf("Cerrando SNAKE GAME...\n");
             again = 0;
         }
     }

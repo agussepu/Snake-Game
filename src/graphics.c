@@ -18,7 +18,7 @@ int welcome() {
     while (verification == 0) {
         printf("Escriba [Y] para comenzar: ");
         scanf(" %c", &selection); // Nota el espacio antes del %c
-        if (selection == 'Y') { // Compara con comillas simples
+        if (selection == 'Y' || selection == 'y') { // Compara con comillas simples
             verification = 1;
         } else {
             printf("Ok... parece que aún no estás listo.\n");
@@ -32,11 +32,15 @@ int checkFinish(){
     char b;
 
     printf("Desea Seguir jugando? [Y/n]:");
-    scanf("%c",&b);
-    if(b == 'n'){
+    scanf(" %c",&b);
+    if (b == 'n' || b == 'N') {
+        return 0; // Finalizar el juego
+    } else if (b == 'y' || b == 'Y') {
+        return 1; // Continuar jugando
+    } else {
+        printf("Entrada no válida. Asumiendo que quieres continuar...\n");
         return 1;
     }
-    return 0;
 }
 
 // Limpie las ventanas
