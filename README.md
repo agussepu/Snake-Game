@@ -1,14 +1,12 @@
 # Basicos
-  [] Aparecen partes de la serpiente en lugares raros cuando volves a jugar (+1 vez)
-  [] Ranking de Jugadores
+  [] Colision con la cola
 
-  [] Acomodar el codigo (Prints en ingles/español - ver que sale por consola y que por pantalla - modularizar bien, etc)
+  [*] Aparecen partes de la serpiente en lugares raros cuando volves a jugar (+1 vez)
+    -Asegúrate de inicializar correctamente los nuevos segmentos de la serpiente. Esto puede hacerse copiando la posición de la cola actual al nuevo segmento al aumentar la longitud. Además, asegúrate de que snake_length no se incremente hasta que el nuevo segmento esté completamente listo. Antes de incrementar snake_length, copia la posición del último segmento (snake[snake_length - 1]) al nuevo segmento (snake[snake_length]).
+  
 
-  [] Agregar nombre del jugador en la pantalla del juego
-  [] Agregar tablero con el score del jugador en la pantalla del juego
-
-# Secundarios
-  [] Musica
-  [] Cambiar color de fondo
-  [] Resaltar el Borde del tablero
-  [] Pausa
+# Temas necesarios
+  [] 
+  [] 
+  [] 
+  [] 

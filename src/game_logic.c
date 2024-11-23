@@ -1,17 +1,5 @@
 #include "game.logic.h"
-
-// Manzana
-void draw_food(SDL_Renderer *renderer, Point food, int offset_x, int offset_y) {
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red
-    SDL_Rect rect = {
-        food.x * CELL_SIZE + offset_x,
-        food.y * CELL_SIZE + offset_y,
-        CELL_SIZE,
-        CELL_SIZE 
-    };
-    SDL_RenderFillRect(renderer, &rect);
-}
-
+ 
 // Lugar donde se generara la manzana
 Point generate_food(Point *snake, int length) {
     Point food;
@@ -33,11 +21,69 @@ Point generate_food(Point *snake, int length) {
 }
 
 // Colision
-int check_collision(Point *snake, int length) {
+int check_collision(Point *snake, int length, int grid_width, int grid_height) {
+    // Verificar colisión con los bordes
+    if (snake[0].x < 0 || snake[0].x >= grid_width || 
+        snake[0].y < 0 || snake[0].y >= grid_height) {
+        return 1; // Colisión con la pared
+    }
+
+
+    // Verificar colisión con el cuerpo
     for (int i = 1; i < length; i++) {
         if (snake[0].x == snake[i].x && snake[0].y == snake[i].y) {
-            return 1; // Collision detected
+            return 2; // Colisión con el cuerpo
         }
     }
-    return 0;
+
+    return 0; // No hay colisión
+}
+
+//Teclas de movimiento de snake (flechitas y salir)
+void input(int *running, int *dir_x, int *dir_y) {
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            *running = 0;
+        } else if (event.type == SDL_KEYDOWN) {
+            switch (event.key.keysym.sym) {
+                case SDLK_ESCAPE:
+                    *running = 0;
+                    break;
+                case SDLK_UP:
+                    if (*dir_y == 0) { *dir_x = 0; *dir_y = -1; }
+                    break;
+                case SDLK_DOWN:
+                    if (*dir_y == 0) { *dir_x = 0; *dir_y = 1; }
+                    break;
+                case SDLK_LEFT:
+                    if (*dir_x == 0) { *dir_x = -1; *dir_y = 0; }
+                    break;
+                case SDLK_RIGHT:
+                    if (*dir_x == 0) { *dir_x = 1; *dir_y = 0; }
+                    break;
+            }
+        }
+    }
+}
+
+void reset_game_state(Point *snake, int *snake_length, Point *food, int *dir_x, int *dir_y, int *score) {
+    // Longitud inicial de la serpiente
+    *snake_length = 8;
+
+    // Posición inicial de la serpiente
+    for (int i = 0; i < *snake_length; i++) {
+        snake[i].x = 10 - i;
+        snake[i].y = 10;
+    }
+
+    // Dirección inicial de movimiento
+    *dir_x = 1;
+    *dir_y = 0;
+
+    // Generar la posición inicial de la comida
+    *food = generate_food(snake, *snake_length);
+
+    // Puntaje inicial
+    *score = 0;
 }

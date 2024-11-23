@@ -12,43 +12,20 @@ int main() {
     // Consigna del juego y nombre usuario  
     welcome();
 
-    int again = 1; // Indicardor para continuar jugando
-
     //Bucle Principal para jugar varias veces
+    int again = 1; // Indicardor para continuar jugando
     while(again)
     {
         //Espera antes de empezar;
         printf("El juego ya esta por comenzar preparate...\n");
         SDL_Delay(2000); // Pausa de 1000 ms (1 segundo)
-
-        //
-        if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-            printf("Error initializing SDL: %s\n", SDL_GetError());
-            return 1;
-        }
-
-        SDL_Window *window = SDL_CreateWindow(
-            "Snake Game",
-            SDL_WINDOWPOS_CENTERED,
-            SDL_WINDOWPOS_CENTERED,
-            WINDOW_WIDTH,
-            WINDOW_HEIGHT,
-            SDL_WINDOW_SHOWN
-        );
-
-        if (!window) {
-            printf("Error creating window: %s\n", SDL_GetError());
-            SDL_Quit();
-            return 1;
-        }
-
-        SDL_Renderer *renderer = SDL_CreateRenderer(
-            window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
-        );
-
-        if (!renderer) {
-            printf("Error creating renderer: %s\n", SDL_GetError());
-            cleanup(window, NULL);
+        
+        // Inicializar el juego (GRAPHICS)
+        SDL_Window *window;
+        SDL_Renderer *renderer;
+        
+        if (!init_graphics(&window, &renderer))
+        {
             return 1;
         }
 
@@ -56,8 +33,8 @@ int main() {
         int offset_x = (WINDOW_WIDTH - WINDOW_GRID_WIDTH) / 2;
         int offset_y = (WINDOW_HEIGHT - WINDOW_GRID_HEIGHT) / 2;
 
-        Point snake[100];
-        
+        // Variables del juego
+        /*Point snake[100];
         int snake_length = 8;
         for (int i = 0; i < snake_length; i++) {
             snake[i].x = 10 - i;
@@ -67,89 +44,80 @@ int main() {
         int dir_x = 1, dir_y = 0;
         Point food = generate_food(snake, snake_length);
         int score = 0;
-
-        int running = 1;
-        SDL_Event event;
+*/
         
-        // Bucle Juego
-        while (running) {
-            while (SDL_PollEvent(&event)) {
-                if (event.type == SDL_QUIT) {
-                    running = 0;
-                } else if (event.type == SDL_KEYDOWN) {
-                    switch (event.key.keysym.sym) {
-                        case SDLK_ESCAPE:
-                            running = 0;
-                            break; // Exit with ESC
-                        case SDLK_UP:
-                            if (dir_y == 0) { dir_x = 0; dir_y = -1; }
-                            break;
-                        case SDLK_DOWN:
-                            if (dir_y == 0) { dir_x = 0; dir_y = 1; }
-                            break;
-                        case SDLK_LEFT:
-                            if (dir_x == 0) { dir_x = -1; dir_y = 0; }
-                            break;
-                        case SDLK_RIGHT:
-                            if (dir_x == 0) { dir_x = 1; dir_y = 0; }
-                            break;
-                    }
-                }
-            }
+        // Variables del juego
+        Point snake[100];
+        int snake_length;
+        Point food;
+        int dir_x, dir_y;
+        int score;
 
+        // Reiniciar el estado del juego
+        reset_game_state(snake, &snake_length, &food, &dir_x, &dir_y, &score);
+
+        // Bucle Juego
+        int running = 1;    
+
+        while (running) {
+            
+            printf("Head position: (%d, %d)\n", snake[0].x, snake[0].y);
+
+
+            input(&running, &dir_x, &dir_y);
+
+            // Calcular la nueva posición de la cabeza
             Point new_head = {snake[0].x + dir_x, snake[0].y + dir_y};
 
-            // Detectar colisiones antes de mover la serpiente
-            if (new_head.x < 0 || new_head.x >= (WINDOW_GRID_WIDTH / CELL_SIZE) ||
-                new_head.y < 0 || new_head.y >= (WINDOW_GRID_HEIGHT / CELL_SIZE)) {
-                cleanup(window, renderer);
-                printf("Game Over! You hit the wall.\nFinal Score: %d\n", score);
-                running = 0;
-                break;
-            }
-
-            for (int i = 1; i < snake_length; i++) {
-                if (snake[i].x == new_head.x && snake[i].y == new_head.y) {
-                    cleanup(window, renderer);
-                    printf("Game Over! You hit yourself.\nFinal Score: %d\n", score);
-                    running = 0;
-                    break;
-                }
-            }
-
-            // Mover la serpiente 
+           // Mover la serpiente
             for (int i = snake_length - 1; i > 0; i--) {
                 snake[i] = snake[i - 1];
             }
             snake[0] = new_head;
 
-
-            if (snake[0].x == food.x && snake[0].y == food.y) {
-                snake_length++;
-                score++;
-                food = generate_food(snake, snake_length);
-                //printf("Score: %d\n", score);
+            // Verificar colisiones
+            int collision_type = check_collision(
+                snake,
+                snake_length,
+                WINDOW_GRID_WIDTH / CELL_SIZE,
+                WINDOW_GRID_HEIGHT / CELL_SIZE
+                );
+            
+            if (collision_type) {
+                cleanup(window, renderer);
+                if (collision_type == 1) {
+                    printf("Game Over! Chocaste con la pared\n");
+                } else {
+                    printf("Game Over! Parece que te mordiste la cola.\n");
+                }
+                printf("Final Score: %d\n", score);
+                running = 0;
+                break;
             }
 
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Black
-            SDL_RenderClear(renderer);
+            // Comprobar si se comió la comida
+            if (snake[0].x == food.x && snake[0].y == food.y) {
+                // Incrementar longitud de la serpiente correctamente
+                snake[snake_length] = snake[snake_length - 1]; // Nuevo segmento toma posición de la cola
+                snake_length++;
+                score++;
 
-            draw_grid(renderer, offset_x, offset_y);
-            draw_snake(renderer, snake, snake_length, offset_x, offset_y);
-            draw_food(renderer, food, offset_x, offset_y);
+                // Generar una nueva manzana
+                food = generate_food(snake, snake_length);
+}
 
-            SDL_RenderPresent(renderer);
 
+            // Renderizar el juego
+            render_game(renderer, snake, snake_length, food, offset_x, offset_y);
+
+            //Velocidad serpiente
             SDL_Delay(120);
         }
         
-        if(checkFinish() == 0){
-            printf("Cerrando SNAKE GAME...\n");
+        if(!checkFinish()){
             again = 0;
         }
         
         cleanup(window, renderer);
     }
-
-    return 0;
 }
