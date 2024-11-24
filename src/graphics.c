@@ -22,7 +22,7 @@ void draw_grid(SDL_Renderer *renderer, int offset_x, int offset_y) {
 // Serpiente
 void draw_snake(SDL_Renderer *renderer, Point *snake, int length, int offset_x, int offset_y) {
     SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // Verde
-    for (int i = 0; i < length -1 ; i++) { // Solo iterar hasta la longitud actual
+    for (int i = 0; i < length - 1 ; i++) { // Solo iterar hasta la longitud actual
         SDL_Rect rect = {
             snake[i].x * CELL_SIZE + offset_x,
             snake[i].y * CELL_SIZE + offset_y,

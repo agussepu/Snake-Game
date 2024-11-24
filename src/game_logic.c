@@ -94,8 +94,8 @@ int checkFinish() {
 }
 
 // Cartel bienvenida y nombre usuario
-int welcome() {
-    char name[20];
+void welcome(char *name) {
+    //char name[20];
     char selection;
     int verification = 0;
 
@@ -122,9 +122,6 @@ int welcome() {
             printf("Ok... parece que aún no estás listo.\n");
         }
     }
-
-    //Espera un segundo antes de comenzar
-    return 0;
 }
 
 void reset_game_state(Point *snake, int *snake_length, Point *food, int *dir_x, int *dir_y, int *score) {
@@ -147,25 +144,4 @@ void reset_game_state(Point *snake, int *snake_length, Point *food, int *dir_x, 
 
     // Puntaje inicial
     *score = 0;
-}
-
-// Función para cargar jugadores desde el archivo
-int cargar_jugadores(const char *nombre_archivo, Jugador jugadores[]) {
-    FILE *archivo = fopen(nombre_archivo, "r");
-    if (archivo == NULL) {
-        printf("No se pudo abrir el archivo '%s'. Se asumirá que está vacío.\n", nombre_archivo);
-        return 0;
-    }
-
-    int n = 0;
-    while (fscanf(archivo, "%49s %d", jugadores[n].nombre, &jugadores[n].puntos) == 2) {
-        n++;
-        if (n >= MAX_JUGADORES) {
-            printf("Se alcanzó el máximo número de jugadores permitidos.\n");
-            break;
-        }
-    }
-
-    fclose(archivo);
-    return n;
 }

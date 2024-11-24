@@ -11,6 +11,7 @@
 #define WINDOW_GRID_WIDTH 800
 #define WINDOW_GRID_HEIGHT 600
 #define CELL_SIZE 40
+#define MAX_JUGADORES 20
 
 // Estructura general de eje x,y
 typedef struct {

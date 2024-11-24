@@ -11,7 +11,8 @@ typedef struct {
 } Jugador;
 
 // Función para cargar el ranking desde el archivo
-void cargarRanking(Jugador ranking[], const char *archivo) {
+void cargarRanking(Jugador ranking[], const char *archivo)
+{
     FILE *fp = fopen(archivo, "r");
     if (fp == NULL) {
         // Si no existe el archivo, inicializamos el ranking vacío
@@ -22,13 +23,14 @@ void cargarRanking(Jugador ranking[], const char *archivo) {
         return;
     }
 
+
     for (int i = 0; i < MAX_JUGADORES; i++) {
-        if (fscanf(fp, "%s %d", ranking[i].nombre, &ranking[i].puntuacion) != 2) {
-            strcpy(ranking[i].nombre, "Vacío");
-            ranking[i].puntuacion = 0;
+            if (fscanf(fp, "%s %d", ranking[i].nombre, &ranking[i].puntuacion) != 2) {
+                strcpy(ranking[i].nombre, "Vacío");
+                ranking[i].puntuacion = 0;
+            }
         }
-    }
-    fclose(fp);
+        fclose(fp);
 }
 
 // Función para guardar el ranking en el archivo

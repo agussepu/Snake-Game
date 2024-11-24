@@ -1,5 +1,6 @@
 #include "graphics.h"
 #include "game.logic.h"
+#include "ranking.h"
 
 // Librerias Generales
 #include <stdio.h>
@@ -9,11 +10,15 @@
 int main() {
     srand(time(NULL));
 
-    //Leer ranking de jugadores
-    //void cargarDatosRanking();
+    const char *archivoRanking = "data/ranking.txt";
+    Jugador ranking[MAX_JUGADORES] = {0};
 
-    // Consigna del juego y nombre usuario  
-    welcome();
+    // Cargar el ranking y obtener el número de jugadores cargados
+    int numJugadores = cargarRanking(ranking, archivoRanking, MAX_JUGADORES);
+
+    //Bienvenida y obtengo el nombre
+    char jugadorActual[NOMBRE_LARGO];
+    welcome(jugadorActual);
 
     //Bucle Principal para jugar varias veces
     int again = 1; // Indicardor para continuar jugando
@@ -68,10 +73,14 @@ int main() {
                 snake_length,
                 WINDOW_GRID_WIDTH / CELL_SIZE,
                 WINDOW_GRID_HEIGHT / CELL_SIZE
-                );
-            
+            );
+ 
             if (collision_type) {
                 cleanup(window, renderer);
+
+                // Actualiza el ranking con el jugador actual
+                actualizarRanking(ranking, &numJugadores, jugadorActual, score);
+
                 if (collision_type == 1) {
                     printf("Game Over! Chocaste con la pared\n");
                 } else {
@@ -93,8 +102,7 @@ int main() {
 
                 // Generar una nueva manzana
                 food = generate_food(snake, snake_length);
-}
-
+            }
 
             // Renderizar el juego
             render_game(renderer, snake, snake_length, food, offset_x, offset_y);
@@ -104,6 +112,12 @@ int main() {
         }
         
         if(!checkFinish()){
+
+            // Guardar el ranking actualizado
+            guardarRanking(ranking, archivoRanking, numJugadores);
+
+            // Mostrar el ranking
+            mostrarRanking(ranking, numJugadores);
             again = 0;
         }
         
