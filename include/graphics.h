@@ -18,13 +18,11 @@ typedef struct {
 } Point;
 
 // Funciones
-int welcome();
 void draw_grid(SDL_Renderer *renderer, int offset_x, int offset_y);
 void draw_snake(SDL_Renderer *renderer, Point *snake, int length, int offset_x, int offset_y);
 void draw_food(SDL_Renderer *renderer, Point food, int offset_x, int offset_y);
 void cleanup(SDL_Window *window, SDL_Renderer *renderer);
 int init_graphics(SDL_Window **window, SDL_Renderer **renderer);
-int checkFinish();
 void render_game(SDL_Renderer *renderer, Point *snake, int snake_length, Point food, int offset_x, int offset_y);
 
 

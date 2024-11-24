@@ -9,6 +9,9 @@
 int main() {
     srand(time(NULL));
 
+    //Leer ranking de jugadores
+    //void cargarDatosRanking();
+
     // Consigna del juego y nombre usuario  
     welcome();
 
@@ -74,7 +77,9 @@ int main() {
                 } else {
                     printf("Game Over! Parece que te mordiste la cola.\n");
                 }
-                printf("Final Score: %d\n", score);
+                printf("====================\n");
+                printf("= Final Score: %d  =\n", score);
+                printf("====================\n");
                 running = 0;
                 break;
             }
