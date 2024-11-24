@@ -7,10 +7,12 @@ int welcome() {
     char selection;
     int verification = 0;
 
-    printf("-------------------------[SNAKE GAME]------------------------\n");
-    printf("Este juego consiste en ponerte en el papel de una serpiente la cual odia a apple... \n");
-    printf("Por lo que debe aguantar lo más que pueda comiendo manzanas.\n");
-    printf("-------------------------------------------------------------\n");
+    printf("\n");
+    printf("*********************** WELCOME TO SNAKE GAME ***********************\n");
+    printf("*  Este juego consiste en ponerte en el papel de una serpiente,     *\n");
+    printf("*  la cual odia a las manzanas... y debe comerlas todo lo que       *\n");
+    printf("*  pueda para sobrevivir.                                           *\n");
+    printf("*********************************************************************\n");
     printf("Antes de comenzar, escriba su nombre por favor: ");
     scanf("%s", name);
 
@@ -18,6 +20,9 @@ int welcome() {
 
     while (verification == 0) {
         printf("Escriba [Y] para comenzar: ");
+        
+        while (getchar() != '\n'); // Limpiar buffer de entrada
+
         scanf(" %c", &selection); // Nota el espacio antes del %c
         if (selection == 'Y' || selection == 'y') { // Compara con comillas simples
             verification = 1;
@@ -39,7 +44,10 @@ int checkFinish() {
 
         // Verificar la entrada
         if (input == 'n' || input == 'N') {
-            printf("\n [Cerrando SNAKE GAME] \n\n");
+            printf("\n");
+            printf("*********************** CERRANDO SNAKE GAME ***********************\n");
+            printf("*                        Gracias por jugar!                       *\n");
+            printf("*******************************************************************\n");
             return 0; // Terminar juego
         } else if (input == 'y' || input == 'Y') {
             return 1; // Continuar juego
@@ -73,7 +81,7 @@ void draw_grid(SDL_Renderer *renderer, int offset_x, int offset_y) {
 // Serpiente
 void draw_snake(SDL_Renderer *renderer, Point *snake, int length, int offset_x, int offset_y) {
     SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // Verde
-    for (int i = 0; i < length; i++) { // Solo iterar hasta la longitud actual
+    for (int i = 0; i < length -1 ; i++) { // Solo iterar hasta la longitud actual
         SDL_Rect rect = {
             snake[i].x * CELL_SIZE + offset_x,
             snake[i].y * CELL_SIZE + offset_y,

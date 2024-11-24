@@ -32,19 +32,6 @@ int main() {
         // Calculamos el desplazamiento para centrar el tablero
         int offset_x = (WINDOW_WIDTH - WINDOW_GRID_WIDTH) / 2;
         int offset_y = (WINDOW_HEIGHT - WINDOW_GRID_HEIGHT) / 2;
-
-        // Variables del juego
-        /*Point snake[100];
-        int snake_length = 8;
-        for (int i = 0; i < snake_length; i++) {
-            snake[i].x = 10 - i;
-            snake[i].y = 10;
-        }
-
-        int dir_x = 1, dir_y = 0;
-        Point food = generate_food(snake, snake_length);
-        int score = 0;
-*/
         
         // Variables del juego
         Point snake[100];
@@ -60,10 +47,7 @@ int main() {
         int running = 1;    
 
         while (running) {
-            
-            printf("Head position: (%d, %d)\n", snake[0].x, snake[0].y);
-
-
+            //printf("Head position: (%d, %d)\n", snake[0].x, snake[0].y);
             input(&running, &dir_x, &dir_y);
 
             // Calcular la nueva posición de la cabeza
