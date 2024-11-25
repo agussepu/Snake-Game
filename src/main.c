@@ -63,7 +63,7 @@ int main() {
             // Calcular la nueva posición de la cabeza
             Point new_head = {snake[0].x + dir_x, snake[0].y + dir_y};
 
-           // Mover la serpiente FUNCION
+           // Mover la serpiente 
             for (int i = snake_length - 1; i > 0; i--) {
                 snake[i] = snake[i - 1];
             }
@@ -77,7 +77,7 @@ int main() {
                 WINDOW_GRID_HEIGHT / CELL_SIZE
             );
             
-            // Si colision_type devuelve verdadero entonces la serpiente chocho FUNCION
+            // Si colision_type devuelve verdadero entonces la serpiente chocho 
             if (collision_type) {
                 
                 // Indica con que superficie chocaste
