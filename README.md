@@ -16,6 +16,12 @@ siguientes intrucciones:
  make - (compila el juego)
  ./snake_game - (inicializa el juego)
 
+ # Como jugar?
+ Se utilizan las flechitas del teclado para moverse por el mapa. Al comenzar se le
+ pedira el nombre del jugador y debera ingresar la letra "y" para comenzar. Al terminar 
+ la partida se le preguntara si desea seguir jugando, en caso de que quiera salir del 
+ juego debera ingresar la letra "n" y a continuacion se le presentara el ranking.
+
  # Integrantes
- - Sepulveda Matias Agustin
- - Martinez Bengolea Tomas
+ - Sepulveda Matias Agustin - Horas: 48
+ - Martinez Bengolea Tomas - Horas: 39
