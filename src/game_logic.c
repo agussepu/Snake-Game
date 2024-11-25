@@ -78,9 +78,14 @@ int checkFinish() {
         // Verificar la entrada
         if (input == 'n' || input == 'N') {
             printf("\n");
-            printf("*********************** CERRANDO SNAKE GAME ***********************\n");
-            printf("*                        Gracias por jugar!                       *\n");
-            printf("*******************************************************************\n");
+            printf("*********************************************************************\n");
+            printf("************************ CERRANDO SNAKE GAME ************************\n");
+            printf("*********************************************************************\n");
+            printf("\n");
+            printf("=====================================================================\n");
+            printf("Ⅱ                         GRACIAS POR JUGAR                         Ⅱ\n");
+            printf("=====================================================================\n");
+            printf("\n");
             return 0; // Terminar juego
         } else if (input == 'y' || input == 'Y') {
             return 1; // Continuar juego
@@ -109,16 +114,15 @@ void welcome(char *name) {
     printf("=====================================================================\n");
     printf("Ⅱ  Este juego consiste en ponerte en el papel de una serpiente,     Ⅱ\n");
     printf("Ⅱ  la cual odia a las manzanas. Tu mision es deborar todas las      Ⅱ\n");
-    printf("Ⅱ  manzas que cuentres en tu camino pero cuidado, evita comerte     Ⅱ\n");
-    printf("Ⅱ  a ti mismo o golpearte con las paredes                           Ⅱ\n");
+    printf("Ⅱ  manzas que encuentres en tu camino pero cuidado, evita comerte   Ⅱ\n");
+    printf("Ⅱ  a ti mismo o golpearte con las paredes.                          Ⅱ\n");
     printf("=====================================================================\n");
     printf("\n");
     printf("=====================================================================\n");
-    printf("Antes de comenzar, escriba su nombre por favor: ");
-    printf("Ⅱ-------------------------------------------------------------------Ⅱ\n");
+    printf(" Antes de comenzar, escriba su nombre por favor: ");
     scanf("%s", name);
-
-    printf("ⅡBuena suerte comiendo manzanas %s. Recuerda no comerte a ti mismo!!Ⅱ\n", name);
+    printf("Ⅱ-------------------------------------------------------------------Ⅱ\n");
+    printf(" Buena suerte comiendo manzanas %s. No te golpees!!               \n", name);
     printf("=====================================================================\n");
 
     while (verification == 0) {

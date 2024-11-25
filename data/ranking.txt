@@ -1,2 +1,6 @@
-tomas 0
-TOMAS 0
+tomas 1
+pedro 0
+carlos 0
+sepu 0
+nose 0
+juan 0

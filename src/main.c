@@ -83,11 +83,13 @@ int main() {
 
                 if (collision_type == 1) {
                     printf("***************  ¡¡GAME OVER!! Chocaste con la pared  ***************\n");
+                    printf("\n");
                 } else {
                     printf("**********  ¡¡GAME OVER!! Parece que te mordiste la cola  ***********\n");
+                    printf("\n");
                 }
                 printf("=====================================================================\n");
-                printf("Ⅱ                          Final Score: %d                          Ⅱ\n", score);
+                printf("Ⅱ                          Final Score: %d                           Ⅱ\n", score);
                 printf("=====================================================================\n");
                 running = 0;
                 break;

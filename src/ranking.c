@@ -28,7 +28,7 @@ void mostrarRanking(Jugador ranking[], int numJugadores) {
     printf("Ⅱ Posición           | Nombre                  | Puntos             Ⅱ\n");
     printf("---------------------------------------------------------------------\n");
     for (int i = 0; i < numJugadores; i++) {
-        printf("Ⅱ N°%8d              | %-15s                   | %6d                Ⅱ\n", i + 1, ranking[i].nombre, ranking[i].puntuacion);
+        printf("Ⅱ N°%8d         | %-15s         | %6d             Ⅱ\n", i + 1, ranking[i].nombre, ranking[i].puntuacion);
     }
     printf("=====================================================================\n");
 }
