@@ -39,7 +39,6 @@ int main() {
         }
 
         // Calculamos el desplazamiento (centrado del tablero)
-        //Se resta el ancho/alto del tablero del tamaño de la ventana y se divide entre 2 para distribuir equitativamente el espacio sobrante.
         int offset_x = (WINDOW_WIDTH - WINDOW_GRID_WIDTH) / 2;
         int offset_y = (WINDOW_HEIGHT - WINDOW_GRID_HEIGHT) / 2;
 

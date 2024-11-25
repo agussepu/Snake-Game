@@ -1,4 +1,5 @@
 a 4
 tomi 3
+Y 2
 agus 0
 t 0
