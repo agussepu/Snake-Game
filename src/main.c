@@ -82,13 +82,13 @@ int main() {
                 actualizarRanking(ranking, &numJugadores, jugadorActual, score);
 
                 if (collision_type == 1) {
-                    printf("Game Over! Chocaste con la pared\n");
+                    printf("***************  ¡¡GAME OVER!! Chocaste con la pared  ***************\n");
                 } else {
-                    printf("Game Over! Parece que te mordiste la cola.\n");
+                    printf("**********  ¡¡GAME OVER!! Parece que te mordiste la cola  ***********\n");
                 }
-                printf("====================\n");
-                printf("= Final Score: %d  =\n", score);
-                printf("====================\n");
+                printf("=====================================================================\n");
+                printf("Ⅱ                          Final Score: %d                          Ⅱ\n", score);
+                printf("=====================================================================\n");
                 running = 0;
                 break;
             }

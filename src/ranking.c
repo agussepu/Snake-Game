@@ -22,15 +22,15 @@ int cargarRanking(Jugador ranking[], const char *archivo, int maxJugadores) {
 
 // Función para mostrar el ranking
 void mostrarRanking(Jugador ranking[], int numJugadores) {
-    printf("*******************************************************************\n");
-    printf("|     Ranking de Jugadores          |\n");
-    printf("=====================================\n");
-    printf("| Posición | Nombre           | Puntos |\n");
-    printf("-------------------------------------\n");
+    printf("=====================================================================\n");
+    printf("Ⅱ                        Ranking de Jugadores                       Ⅱ\n");
+    printf("=====================================================================\n");
+    printf("Ⅱ Posición           | Nombre                  | Puntos             Ⅱ\n");
+    printf("---------------------------------------------------------------------\n");
     for (int i = 0; i < numJugadores; i++) {
-        printf("| %8d | %-15s | %6d |\n", i + 1, ranking[i].nombre, ranking[i].puntuacion);
+        printf("Ⅱ N°%8d              | %-15s                   | %6d                Ⅱ\n", i + 1, ranking[i].nombre, ranking[i].puntuacion);
     }
-    printf("=====================================\n");
+    printf("=====================================================================\n");
 }
 
 void ordenarRanking(Jugador ranking[], int numJugadores) {

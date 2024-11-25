@@ -100,15 +100,26 @@ void welcome(char *name) {
     int verification = 0;
 
     printf("\n");
-    printf("*********************** WELCOME TO SNAKE GAME ***********************\n");
-    printf("*  Este juego consiste en ponerte en el papel de una serpiente,     *\n");
-    printf("*  la cual odia a las manzanas... y debe comerlas todo lo que       *\n");
-    printf("*  pueda para sobrevivir.                                           *\n");
     printf("*********************************************************************\n");
+    printf("*********************** WELCOME TO SNAKE GAME ***********************\n");
+    printf("*********************************************************************\n");
+    printf("\n");
+    printf("=====================================================================\n");
+    printf("Ⅱ                        REGLAS DEL JUEGO                           Ⅱ\n");
+    printf("=====================================================================\n");
+    printf("Ⅱ  Este juego consiste en ponerte en el papel de una serpiente,     Ⅱ\n");
+    printf("Ⅱ  la cual odia a las manzanas. Tu mision es deborar todas las      Ⅱ\n");
+    printf("Ⅱ  manzas que cuentres en tu camino pero cuidado, evita comerte     Ⅱ\n");
+    printf("Ⅱ  a ti mismo o golpearte con las paredes                           Ⅱ\n");
+    printf("=====================================================================\n");
+    printf("\n");
+    printf("=====================================================================\n");
     printf("Antes de comenzar, escriba su nombre por favor: ");
+    printf("Ⅱ-------------------------------------------------------------------Ⅱ\n");
     scanf("%s", name);
 
-    printf("Buena suerte comiendo manzanas %s. Escriba [Y] si quiere comenzar.\n", name);
+    printf("ⅡBuena suerte comiendo manzanas %s. Recuerda no comerte a ti mismo!!Ⅱ\n", name);
+    printf("=====================================================================\n");
 
     while (verification == 0) {
         printf("Escriba [Y] para comenzar: ");
