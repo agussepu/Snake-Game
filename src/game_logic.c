@@ -71,9 +71,6 @@ void input(int *running, int *dir_x, int *dir_y) {
             *running = 0;
         } else if (event.type == SDL_KEYDOWN) {
             switch (event.key.keysym.sym) {
-                case SDLK_ESCAPE:
-                    *running = 0;
-                    break;
                 case SDLK_UP:
                     if (*dir_y == 0) { *dir_x = 0; *dir_y = -1; }
                     break;
