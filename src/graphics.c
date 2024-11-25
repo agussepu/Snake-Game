@@ -69,6 +69,12 @@ int init_graphics(SDL_Window **window, SDL_Renderer **renderer) {
         SDL_Quit();
         return 0;
     }
+
+    if (TTF_Init() == -1) {
+        printf("Error initializing SDL_ttf: %s\n", TTF_GetError());
+        return 1;
+    }
+
     return 1;
 }
 
@@ -82,10 +88,63 @@ void render_game(SDL_Renderer *renderer, Point *snake, int snake_length, Point f
     draw_snake(renderer, snake, snake_length, offset_x, offset_y);
     draw_food(renderer, food, offset_x, offset_y);
 
-    // Actualizar la pantalla
-    SDL_RenderPresent(renderer);
 }
 
+void render_score(SDL_Renderer *renderer, int score, int screen_width) {
+    // Abrir la fuente (reemplaza con la ruta correcta)
+    TTF_Font *font = TTF_OpenFont("/home/agussepu/Escritorio/Snake-Game/data/Parkinsans-Medium.ttf", 50); 
+    if (font == NULL) {
+        printf("Error loading font: %s\n", TTF_GetError());
+        return;
+    }
 
+    // Crear el texto
+    char scoreText[50];
+    sprintf(scoreText, "Score: %d", score);
+    
+    // Definir el color del texto (blanco)
+    SDL_Color textColor = {255, 255, 255, 255};  // Blanco con opacidad máxima
+    SDL_Surface *textSurface = TTF_RenderText_Solid(font, scoreText, textColor);
 
+    // Verificar si la superficie fue creada correctamente
+    if (textSurface == NULL) {
+        printf("Error creating text surface: %s\n", TTF_GetError());
+        TTF_CloseFont(font);  // Cerrar la fuente
+        return;
+    }
+
+    // Crear la textura a partir de la superficie
+    SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    if (textTexture == NULL) {
+        printf("Error creating text texture: %s\n", SDL_GetError());
+        SDL_FreeSurface(textSurface);  // Liberar la superficie
+        TTF_CloseFont(font);  // Cerrar la fuente
+        return;
+    }
+
+    // Obtener las dimensiones del texto
+    int textWidth = textSurface->w;
+    int textHeight = textSurface->h;
+
+    // Liberar la superficie
+    SDL_FreeSurface(textSurface);
+
+    // Calcular la posición horizontal para mover el texto a la derecha
+    int textX = screen_width / 2 - textWidth / 2;  // Un margen de 20 píxeles desde el borde derecho
+    
+    // Calcular la posición vertical para poner el puntaje un poco más abajo
+    int textY = 100;  // Un margen de 20 píxeles desde el borde superior
+
+    // Establecer la posición del texto
+    SDL_Rect textRect = {textX, textY, textWidth, textHeight};
+
+    // Renderizar el texto en la pantalla
+    SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
+
+    // Limpiar la textura
+    SDL_DestroyTexture(textTexture);
+
+    // Cerrar la fuente
+    TTF_CloseFont(font);
+}
 

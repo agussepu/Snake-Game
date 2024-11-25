@@ -1,3 +1,4 @@
+agus 7
 tomas 1
 pedro 0
 carlos 0

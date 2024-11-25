@@ -108,6 +108,12 @@ int main() {
 
             // Renderizar el juego
             render_game(renderer, snake, snake_length, food, offset_x, offset_y);
+            
+            // Mostrar el puntaje
+            render_score(renderer, score, WINDOW_WIDTH);
+            
+            // Actualiza la pantalla
+            SDL_RenderPresent(renderer); 
 
             //Velocidad serpiente
             SDL_Delay(120);

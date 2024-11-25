@@ -2,6 +2,7 @@
 #define GRAPHICS_H
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 // Dimensiones de la ventana
 #define WINDOW_WIDTH 1920
@@ -25,6 +26,6 @@ void draw_food(SDL_Renderer *renderer, Point food, int offset_x, int offset_y);
 void cleanup(SDL_Window *window, SDL_Renderer *renderer);
 int init_graphics(SDL_Window **window, SDL_Renderer **renderer);
 void render_game(SDL_Renderer *renderer, Point *snake, int snake_length, Point food, int offset_x, int offset_y);
-
+void render_score(SDL_Renderer *renderer, int score, int screen_width);
 
 #endif // GRAPHICS_H

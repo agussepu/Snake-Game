@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -g -Iinclude
-LIBS = -lSDL2
+LIBS = -lSDL2 -lSDL2_ttf   # Añadir SDL2_ttf
 
 SRCDIR = src
 INCDIR = include
@@ -13,10 +13,10 @@ EXEC = snake_game
 all: $(EXEC)
 
 $(EXEC): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBS)
+	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBS)  # Se asegura de enlazar SDL2 y SDL2_ttf
 
 $(BUILD_DIR)/%.o: $(SRCDIR)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@   # Compilación de archivos .c a .o
 
 clean:
-	rm -f $(BUILD_DIR)/*.o $(EXEC)
+	rm -f $(BUILD_DIR)/*.o $(EXEC)   # Limpiar los archivos compilados y el ejecutable
