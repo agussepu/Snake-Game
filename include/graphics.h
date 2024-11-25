@@ -1,10 +1,11 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
-// sudo apt install libsdl2-dev
-// sudo apt install libsdl2-ttf-dev
+// Libreria grafica y de fuente
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+
+#include <stdio.h>
 
 // Dimensiones de la ventana
 #define WINDOW_WIDTH 1920

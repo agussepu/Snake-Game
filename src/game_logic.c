@@ -2,7 +2,6 @@
 
 // Bienvenida y nombre del usuario
 void welcome(char *name) {
-    //char name[20];
     char selection;
     int verification = 0;
 
@@ -45,7 +44,7 @@ void welcome(char *name) {
 void reset_game_state(Point *snake, int *snake_length, Point *food, int *dir_x, int *dir_y, int *score) {
 
     // Longitud inicial de la serpiente
-    *snake_length = 8;
+    *snake_length = 5; 
 
     // Posición inicial de la serpiente
     for (int i = 0; i < *snake_length; i++) {

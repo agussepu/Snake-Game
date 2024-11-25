@@ -1,6 +1,6 @@
 #include "ranking.h"
 
-// Función para cargar el ranking desde el archivo
+// Carga el ranking desde el archivo
 int load_ranking(Player ranking[], const char *archive, int max_players) {
     FILE *fp = fopen(archive, "r");
     if (fp == NULL) {
@@ -73,8 +73,7 @@ void order_ranking(Player ranking[], int num_players) {
     }
 }
 
-// Función para mostrar el ranking
-// Función para mostrar el ranking
+// Muestra el ranking
 void show_ranking(Player ranking[], int index, int num_players) {
     if (index >= num_players) {
         printf("=====================================================================\n");
