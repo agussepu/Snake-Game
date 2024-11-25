@@ -1,5 +1,5 @@
+a 14
 tomas 7
 pedro 5
-a 5
 agus 3
 A 1

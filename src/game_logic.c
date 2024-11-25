@@ -92,6 +92,14 @@ void input(int *running, int *dir_x, int *dir_y) {
     }
 }
 
+// Mueve la serpiente
+void move_snake(Point *snake, int snake_length, Point new_head) {
+    for (int i = snake_length - 1; i > 0; i--) {
+        snake[i] = snake[i - 1]; 
+    }
+    snake[0] = new_head; 
+}
+
 // Colision
 int check_collision(Point *snake, int length, int grid_width, int grid_height) {
     // Verificar colisión con los bordes

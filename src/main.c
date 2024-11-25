@@ -63,11 +63,8 @@ int main() {
             // Calcular la nueva posición de la cabeza
             Point new_head = {snake[0].x + dir_x, snake[0].y + dir_y};
 
-           // Mover la serpiente 
-            for (int i = snake_length - 1; i > 0; i--) {
-                snake[i] = snake[i - 1];
-            }
-            snake[0] = new_head;
+            // Mover la serpiente
+            move_snake(snake, snake_length, new_head);
 
             // Verificar colisiones 
             int collision_type = check_collision(
