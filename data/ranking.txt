@@ -1,1 +1,4 @@
-
+tomas 7
+pedro 5
+a 4
+A 1

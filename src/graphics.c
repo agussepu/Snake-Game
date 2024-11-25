@@ -1,51 +1,8 @@
 #include "graphics.h"
 #include "stdio.h"
 
-// Limpie las ventanas
-void cleanup(SDL_Window *window, SDL_Renderer *renderer) {
-    if (renderer) SDL_DestroyRenderer(renderer);
-    if (window) SDL_DestroyWindow(window);
-    SDL_Quit();
-}
-
-// Tablero
-void draw_grid(SDL_Renderer *renderer, int offset_x, int offset_y) {
-    SDL_SetRenderDrawColor(renderer, 55, 55, 55, 255); // White
-    for (int x = 0; x < WINDOW_GRID_WIDTH + 1; x += CELL_SIZE) {
-        SDL_RenderDrawLine(renderer, x + offset_x, offset_y, x + offset_x, WINDOW_GRID_HEIGHT + offset_y);
-    }
-    for (int y = 0; y < WINDOW_GRID_HEIGHT + 1; y += CELL_SIZE) {
-        SDL_RenderDrawLine(renderer, offset_x, y + offset_y, WINDOW_GRID_WIDTH + offset_x, y + offset_y);
-    }
-}
-
-// Serpiente
-void draw_snake(SDL_Renderer *renderer, Point *snake, int length, int offset_x, int offset_y) {
-    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // Verde
-    for (int i = 0; i < length - 1 ; i++) { // Solo iterar hasta la longitud actual
-        SDL_Rect rect = {
-            snake[i].x * CELL_SIZE + offset_x,
-            snake[i].y * CELL_SIZE + offset_y,
-            CELL_SIZE,
-            CELL_SIZE
-        };
-        SDL_RenderFillRect(renderer, &rect);
-    }
-}
-
-// Manzana
-void draw_food(SDL_Renderer *renderer, Point food, int offset_x, int offset_y) {
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red
-    SDL_Rect rect = {
-        food.x * CELL_SIZE + offset_x,
-        food.y * CELL_SIZE + offset_y,
-        CELL_SIZE,
-        CELL_SIZE 
-    };
-    SDL_RenderFillRect(renderer, &rect);
-}
-
-int init_graphics(SDL_Window **window, SDL_Renderer **renderer) {
+// Inicia los recursos graficos del juego y cheque que no hayan errores
+int init_graphics(SDL_Window **window, SDL_Renderer **renderer, TTF_Font **font) {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         printf("Error al inicializar SDL: %s\n", SDL_GetError());
         return 0;
@@ -72,79 +29,112 @@ int init_graphics(SDL_Window **window, SDL_Renderer **renderer) {
 
     if (TTF_Init() == -1) {
         printf("Error al inicializar SDL_ttf: %s\n", TTF_GetError());
-        return 1;
+        SDL_DestroyRenderer(*renderer);
+        SDL_DestroyWindow(*window);
+        SDL_Quit();
+        return 0;
+    }
+
+    // Inicializar la fuente
+    *font = TTF_OpenFont("fonts/Parkinsans-Medium.ttf", 50);
+    if (!*font) {
+        printf("Error al cargar fuente: %s\n", TTF_GetError());
+        SDL_DestroyRenderer(*renderer);
+        SDL_DestroyWindow(*window);
+        SDL_Quit();
+        return 0;
     }
 
     return 1;
 }
 
+// Dibuja el tablero
+void draw_grid(SDL_Renderer *renderer, int offset_x, int offset_y) {
+    SDL_SetRenderDrawColor(renderer, 55, 55, 55, 255); // Colo de las lineas del tablero
+    for (int x = 0; x < WINDOW_GRID_WIDTH + 1; x += CELL_SIZE) {
+        SDL_RenderDrawLine(renderer, x + offset_x, offset_y, x + offset_x, WINDOW_GRID_HEIGHT + offset_y);
+    }
+    for (int y = 0; y < WINDOW_GRID_HEIGHT + 1; y += CELL_SIZE) {
+        SDL_RenderDrawLine(renderer, offset_x, y + offset_y, WINDOW_GRID_WIDTH + offset_x, y + offset_y);
+    }
+}
+
+// Dibuja la serpiente
+void draw_snake(SDL_Renderer *renderer, Point *snake, int length, int offset_x, int offset_y) {
+    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // Colo de la serpient (Verde)
+    for (int i = 0; i < length - 1 ; i++) { 
+        SDL_Rect rect = {
+            snake[i].x * CELL_SIZE + offset_x,
+            snake[i].y * CELL_SIZE + offset_y,
+            CELL_SIZE,
+            CELL_SIZE
+        };
+        SDL_RenderFillRect(renderer, &rect);
+    }
+}
+
+// Dibuja la manzana
+void draw_food(SDL_Renderer *renderer, Point food, int offset_x, int offset_y) {
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Color de la manzana (rojo)
+    SDL_Rect rect = {
+        food.x * CELL_SIZE + offset_x,
+        food.y * CELL_SIZE + offset_y,
+        CELL_SIZE,
+        CELL_SIZE 
+    };
+    SDL_RenderFillRect(renderer, &rect);
+}
+
+// Dibuja los elementos principales del jeugo 
 void render_game(SDL_Renderer *renderer, Point *snake, int snake_length, Point food, int offset_x, int offset_y) {
-    // Limpiar el renderizador con color de fondo
+    // Limpia el renderizador con un color negro (fondo del juego)
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    // Dibujar la cuadrícula, la serpiente y la comida
+    // Dibuja el tablero, la serpiente y la manzana
     draw_grid(renderer, offset_x, offset_y);
     draw_snake(renderer, snake, snake_length, offset_x, offset_y);
     draw_food(renderer, food, offset_x, offset_y);
 
 }
 
-void render_score(SDL_Renderer *renderer, int score, int screen_width) {
-    // Abrir la fuente (reemplaza con la ruta correcta)
-    TTF_Font *font = TTF_OpenFont("fonts/Parkinsans-Medium.ttf", 50); 
-    if (font == NULL) {
-        printf("Error al cargar fuente: %s\n", TTF_GetError());
-        return;
-    }
+// Dibuja el puntaje de la partida en juego
+void render_score(SDL_Renderer *renderer, TTF_Font *font, int score, int screen_width) {
+    if (!font) return; // Verifica que la fuente esté cargada (mirar)
 
-    // Crear el texto
     char scoreText[50];
     sprintf(scoreText, "Score: %d", score);
-    
-    // Definir el color del texto (blanco)
-    SDL_Color textColor = {255, 255, 255, 255};  // Blanco con opacidad máxima
+
+    SDL_Color textColor = {255, 255, 255, 255}; // Blanco
     SDL_Surface *textSurface = TTF_RenderText_Solid(font, scoreText, textColor);
 
-    // Verificar si la superficie fue creada correctamente
-    if (textSurface == NULL) {
-        printf("Error al crear la superficie de texto: %s\n", TTF_GetError());
-        TTF_CloseFont(font);  // Cerrar la fuente
+    if (!textSurface) {
+        printf("Error al crear superficie de texto: %s\n", TTF_GetError());
         return;
     }
 
-    // Crear la textura a partir de la superficie
     SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
-    if (textTexture == NULL) {
-        printf("Error al crear la textura del texto: %s\n", SDL_GetError());
-        SDL_FreeSurface(textSurface);  // Liberar la superficie
-        TTF_CloseFont(font);  // Cerrar la fuente
+    if (!textTexture) {
+        printf("Error al crear textura de texto: %s\n", SDL_GetError());
+        SDL_FreeSurface(textSurface);
         return;
     }
 
-    // Obtener las dimensiones del texto
     int textWidth = textSurface->w;
     int textHeight = textSurface->h;
-
-    // Liberar la superficie
     SDL_FreeSurface(textSurface);
 
-    // Calcular la posición horizontal para mover el texto a la derecha
-    int textX = screen_width / 2 - textWidth / 2;  // Un margen de 20 píxeles desde el borde derecho
-    
-    // Calcular la posición vertical para poner el puntaje un poco más abajo
-    int textY = 100;  // Un margen de 20 píxeles desde el borde superior
-
-    // Establecer la posición del texto
-    SDL_Rect textRect = {textX, textY, textWidth, textHeight};
-
-    // Renderizar el texto en la pantalla
+    SDL_Rect textRect = {screen_width / 2 - textWidth / 2, 100, textWidth, textHeight};
     SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
 
-    // Limpiar la textura
-    SDL_DestroyTexture(textTexture);
-
-    // Cerrar la fuente
-    TTF_CloseFont(font);
+    SDL_DestroyTexture(textTexture); // Liberar textura después de renderizar
 }
 
+// Limpie las ventanas
+void cleanup_graphics(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font) {
+    if (font) TTF_CloseFont(font);
+    if (renderer) SDL_DestroyRenderer(renderer);
+    if (window) SDL_DestroyWindow(window);
+    TTF_Quit();
+    SDL_Quit();
+}

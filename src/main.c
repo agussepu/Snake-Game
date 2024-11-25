@@ -26,36 +26,38 @@ int main() {
     {
         //Espera antes de empezar;
         printf("El juego ya esta por comenzar preparate...\n");
-        SDL_Delay(2000); // Pausa de 1000 ms (1 segundo)
+        SDL_Delay(2000); // Pausa de 2000 ms (2 segundos)
         
-        // Inicializar el juego (GRAPHICS)
-        SDL_Window *window;
-        SDL_Renderer *renderer;
-        
-        if (!init_graphics(&window, &renderer))
-        {
-            return 1;
+        // Variables para gráficos
+        SDL_Window *window = NULL;
+        SDL_Renderer *renderer = NULL;
+        TTF_Font *font = NULL;
+
+        // Inicializar gráficos (ventana, renderizador y fuente)
+        if (!init_graphics(&window, &renderer, &font)) {
+            return 1; // Si algo falla, termina el programa
         }
 
-        // Calculamos el desplazamiento para centrar el tablero
+        // Calculamos el desplazamiento (centrado del tablero)
+        //Se resta el ancho/alto del tablero del tamaño de la ventana y se divide entre 2 para distribuir equitativamente el espacio sobrante.
         int offset_x = (WINDOW_WIDTH - WINDOW_GRID_WIDTH) / 2;
         int offset_y = (WINDOW_HEIGHT - WINDOW_GRID_HEIGHT) / 2;
-        
+
         // Variables del juego
-        Point snake[100];
+        Point snake[100]; //posicion (x,y) de cada segemento de la serpiente
         int snake_length;
         Point food;
         int dir_x, dir_y;
         int score;
 
-        // Reiniciar el estado del juego
+        // Reiniciar las variables del juego para volver a jugar
         reset_game_state(snake, &snake_length, &food, &dir_x, &dir_y, &score);
 
-        // Bucle Juego
+        // Bucle de la partida actual
         int running = 1;    
-
         while (running) {
-            //printf("Head position: (%d, %d)\n", snake[0].x, snake[0].y);
+            
+            //Indica la direccion de la serpiente dada por el usuario
             input(&running, &dir_x, &dir_y);
 
             // Calcular la nueva posición de la cabeza
@@ -74,13 +76,9 @@ int main() {
                 WINDOW_GRID_WIDTH / CELL_SIZE,
                 WINDOW_GRID_HEIGHT / CELL_SIZE
             );
- 
+            
+            // Si colision_type devuelve verdadero entonces la serpiente chocho
             if (collision_type) {
-                cleanup(window, renderer);
-
-                // Actualiza el ranking con el jugador actual
-                update_ranking(ranking, &num_players, actual_player, score);
-
                 if (collision_type == 1) {
                     printf("***************  ¡¡GAME OVER!! Chocaste con la pared  ***************\n");
                     printf("\n");
@@ -91,7 +89,14 @@ int main() {
                 printf("=====================================================================\n");
                 printf("Ⅱ                          Final Score: %d                           Ⅱ\n", score);
                 printf("=====================================================================\n");
-                running = 0;
+                
+                // Actualiza el ranking con el jugador actual
+                update_ranking(ranking, &num_players, actual_player, score);
+                
+                //Liberar los recursos del sistema (al chocar no necesitamos mas el juego)
+                cleanup_graphics(window, renderer, font);;
+
+                running = 0; // termina el bucle de la partida actual
                 break;
             }
 
@@ -106,29 +111,28 @@ int main() {
                 food = generate_food(snake, snake_length);
             }
 
-            // Renderizar el juego
+            // Renderizado general del juego
             render_game(renderer, snake, snake_length, food, offset_x, offset_y);
             
-            // Mostrar el puntaje
-            render_score(renderer, score, WINDOW_WIDTH);
+            // Renderizado del puntaje
+            render_score(renderer, font, score, WINDOW_WIDTH);
             
             // Actualiza la pantalla
             SDL_RenderPresent(renderer); 
 
-            //Velocidad serpiente
-            SDL_Delay(120);
+            // Pausa para regular la velocidad del juego
+            SDL_Delay(SNAKE_SPEED);
         }
         
+        //Si checkFinish es falso el jugador no desea seguir jugando
         if(!checkFinish()){
-
-            // Guardar el ranking actualizado
+            // Guardar y mostrar el ranking actualizado
             save_ranking(ranking, archive_ranking, num_players);
-
             // Mostrar el ranking
-            show_ranking(ranking, num_players);
+            show_ranking(ranking, 0, num_players);
+            
+            //Finaliza el bucle principal del juego
             again = 0;
         }
-        
-        cleanup(window, renderer);
     }
 }
