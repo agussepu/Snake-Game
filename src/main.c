@@ -1,5 +1,5 @@
 #include "graphics.h"
-#include "game.logic.h"
+#include "game_logic.h"
 #include "ranking.h"
 
 // Librerias Generales

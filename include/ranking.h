@@ -1,8 +1,8 @@
 #include <string.h>
 #include <stdio.h>
-#include <graphics.h>
 
 #define NOMBRE_LARGO 50
+#define MAX_JUGADORES 20
 
 // Estructura para almacenar información del jugador
 typedef struct {
@@ -10,7 +10,7 @@ typedef struct {
     int puntuacion;
 } Jugador;
 
-//Funciones
+//     [ Funciones ] 
 void guardarRanking(Jugador ranking[], const char *archivo, int numJugadores);
 void mostrarRanking(Jugador ranking[], int numJugadores);
 void actualizarRanking(Jugador ranking[], int *numJugadores, const char *nombre, int puntuacion);

@@ -1,4 +1,4 @@
-#include "game.logic.h"
+#include "game_logic.h"
  
 // Lugar donde se generara la manzana
 Point generate_food(Point *snake, int length) {

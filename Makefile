@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -g -Iinclude
-LIBS = -lSDL2 -lSDL2_ttf   # Añadir SDL2_ttf
+LIBS = -lSDL2 -lSDL2_ttf   
 
 SRCDIR = src
 INCDIR = include
