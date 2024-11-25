@@ -10,15 +10,15 @@
 int main() {
     srand(time(NULL));
 
-    const char *archivoRanking = "data/ranking.txt";
-    Jugador ranking[MAX_JUGADORES] = {0};
+    const char *archive_ranking = "data/ranking.txt";
+    Player ranking[MAX_JUGADORES] = {0};
 
     // Cargar el ranking y obtener el número de jugadores cargados
-    int numJugadores = cargarRanking(ranking, archivoRanking, MAX_JUGADORES);
+    int num_players = load_ranking(ranking, archive_ranking, MAX_JUGADORES);
 
     //Bienvenida y obtengo el nombre
-    char jugadorActual[NOMBRE_LARGO];
-    welcome(jugadorActual);
+    char actual_player[NOMBRE_LARGO];
+    welcome(actual_player);
 
     //Bucle Principal para jugar varias veces
     int again = 1; // Indicardor para continuar jugando
@@ -79,7 +79,7 @@ int main() {
                 cleanup(window, renderer);
 
                 // Actualiza el ranking con el jugador actual
-                actualizarRanking(ranking, &numJugadores, jugadorActual, score);
+                update_ranking(ranking, &num_players, actual_player, score);
 
                 if (collision_type == 1) {
                     printf("***************  ¡¡GAME OVER!! Chocaste con la pared  ***************\n");
@@ -122,10 +122,10 @@ int main() {
         if(!checkFinish()){
 
             // Guardar el ranking actualizado
-            guardarRanking(ranking, archivoRanking, numJugadores);
+            save_ranking(ranking, archive_ranking, num_players);
 
             // Mostrar el ranking
-            mostrarRanking(ranking, numJugadores);
+            show_ranking(ranking, num_players);
             again = 0;
         }
         

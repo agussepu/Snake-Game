@@ -1,8 +1,4 @@
 agus 7
 tomas 1
-a 1
 pedro 0
 carlos 0
-sepu 0
-nose 0
-juan 0

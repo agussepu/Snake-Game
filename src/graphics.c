@@ -45,7 +45,6 @@ void draw_food(SDL_Renderer *renderer, Point food, int offset_x, int offset_y) {
     SDL_RenderFillRect(renderer, &rect);
 }
 
-
 int init_graphics(SDL_Window **window, SDL_Renderer **renderer) {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         printf("Error initializing SDL: %s\n", SDL_GetError());

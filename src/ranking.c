@@ -1,17 +1,17 @@
 #include "ranking.h"
 
 // Función para cargar el ranking desde el archivo
-int cargarRanking(Jugador ranking[], const char *archivo, int maxJugadores) {
-    FILE *fp = fopen(archivo, "r");
+int load_ranking(Player ranking[], const char *archive, int max_players) {
+    FILE *fp = fopen(archive, "r");
     if (fp == NULL) {
         perror("Error al abrir el archivo de ranking");
         return 0; // No se pudo cargar ningún jugador
     }
 
     int count = 0; // Contador de jugadores cargados
-    while (count < maxJugadores && fscanf(fp, "%19s %d", ranking[count].nombre, &ranking[count].puntuacion) == 2) {
+    while (count < max_players && fscanf(fp, "%19s %d", ranking[count].name, &ranking[count].points) == 2) {
         // Verifica si el nombre tiene una longitud válida y si la puntuación es un número válido
-        if (strlen(ranking[count].nombre) == 0 || ranking[count].puntuacion < 0) {
+        if (strlen(ranking[count].name) == 0 || ranking[count].points < 0) {
             break;  // Si los datos no son válidos, interrumpir la carga
         }
         count++;
@@ -21,24 +21,24 @@ int cargarRanking(Jugador ranking[], const char *archivo, int maxJugadores) {
 }
 
 // Función para mostrar el ranking
-void mostrarRanking(Jugador ranking[], int numJugadores) {
+void show_ranking(Player ranking[], int num_players) {
     printf("=====================================================================\n");
     printf("Ⅱ                        Ranking de Jugadores                       Ⅱ\n");
     printf("=====================================================================\n");
     printf("Ⅱ Posición           | Nombre                  | Puntos             Ⅱ\n");
     printf("---------------------------------------------------------------------\n");
-    for (int i = 0; i < numJugadores; i++) {
-        printf("Ⅱ N°%8d         | %-15s         | %6d             Ⅱ\n", i + 1, ranking[i].nombre, ranking[i].puntuacion);
+    for (int i = 0; i < num_players; i++) {
+        printf("Ⅱ N°%8d         | %-15s         | %6d             Ⅱ\n", i + 1, ranking[i].name, ranking[i].points);
     }
     printf("=====================================================================\n");
 }
 
-void ordenarRanking(Jugador ranking[], int numJugadores) {
-    for (int i = 0; i < numJugadores - 1; i++) {
-        for (int j = 0; j < numJugadores - i - 1; j++) {
-            if (ranking[j].puntuacion < ranking[j + 1].puntuacion) {
+void order_ranking(Player ranking[], int num_players) {
+    for (int i = 0; i < num_players - 1; i++) {
+        for (int j = 0; j < num_players - i - 1; j++) {
+            if (ranking[j].points < ranking[j + 1].points) {
                 // Intercambiar jugadores
-                Jugador temp = ranking[j];
+                Player temp = ranking[j];
                 ranking[j] = ranking[j + 1];
                 ranking[j + 1] = temp;
             }
@@ -46,40 +46,40 @@ void ordenarRanking(Jugador ranking[], int numJugadores) {
     }
 }
 
-void guardarRanking(Jugador ranking[], const char *archivo, int numJugadores) {
+void save_ranking(Player ranking[], const char *archive, int num_players) {
     // Ordenar el ranking antes de guardarlo
-    ordenarRanking(ranking, numJugadores);
+    order_ranking(ranking, num_players);
 
-    FILE *fp = fopen(archivo, "w");
+    FILE *fp = fopen(archive, "w");
     if (fp == NULL) {
         perror("Error al guardar el archivo");
         return;
     }
 
-    for (int i = 0; i < numJugadores; i++) {
-        if (strlen(ranking[i].nombre) > 0 && ranking[i].puntuacion >= 0) {
-            fprintf(fp, "%s %d\n", ranking[i].nombre, ranking[i].puntuacion);
+    for (int i = 0; i < num_players; i++) {
+        if (strlen(ranking[i].name) > 0 && ranking[i].points >= 0) {
+            fprintf(fp, "%s %d\n", ranking[i].name, ranking[i].points);
         }
     }
     fclose(fp);
 }
 
-void actualizarRanking(Jugador ranking[], int *numJugadores, const char *nombre, int puntuacion) {
+void update_ranking(Player ranking[], int *num_players, const char *name, int points) {
     // Verificar si el jugador ya existe
-    for (int i = 0; i < *numJugadores; i++) {
-        if (strcmp(ranking[i].nombre, nombre) == 0) {
-            if (puntuacion > ranking[i].puntuacion) {
-                ranking[i].puntuacion = puntuacion; // Actualizar puntuación si es mayor
+    for (int i = 0; i < *num_players; i++) {
+        if (strcmp(ranking[i].name, name) == 0) {
+            if (points > ranking[i].points) {
+                ranking[i].points = points; // Actualizar puntuación si es mayor
             }
             return; // Ya se actualizó, salir
         }
     }
 
     // Si no existe y hay espacio, agregar al final
-    if (*numJugadores < MAX_JUGADORES) {
-        strncpy(ranking[*numJugadores].nombre, nombre, NOMBRE_LARGO - 1);
-        ranking[*numJugadores].nombre[NOMBRE_LARGO - 1] = '\0'; // Asegurar terminación
-        ranking[*numJugadores].puntuacion = puntuacion;
-        (*numJugadores)++;
+    if (*num_players < MAX_JUGADORES) {
+        strncpy(ranking[*num_players].name, name, NOMBRE_LARGO - 1);
+        ranking[*num_players].name[NOMBRE_LARGO - 1] = '\0'; // Asegurar terminación
+        ranking[*num_players].points = points;
+        (*num_players)++;
     }
 }
