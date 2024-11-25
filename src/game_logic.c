@@ -185,9 +185,12 @@ int checkFinish() {
             printf("Ⅱ                         GRACIAS POR JUGAR                         Ⅱ\n");
             printf("=====================================================================\n");
             printf("\n");
+            
             return 0; // Terminar juego
+            break;
         } else if (input == 'y' || input == 'Y') {
             return 1; // Continuar juego
+            break;
         } else {
             printf("Entrada no válida. Intenta nuevamente.\n");
         }
