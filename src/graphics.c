@@ -92,7 +92,7 @@ void render_game(SDL_Renderer *renderer, Point *snake, int snake_length, Point f
 
 void render_score(SDL_Renderer *renderer, int score, int screen_width) {
     // Abrir la fuente (reemplaza con la ruta correcta)
-    TTF_Font *font = TTF_OpenFont("data/Parkinsans-Medium.ttf", 50); 
+    TTF_Font *font = TTF_OpenFont("fonts/Parkinsans-Medium.ttf", 50); 
     if (font == NULL) {
         printf("Error loading font: %s\n", TTF_GetError());
         return;
