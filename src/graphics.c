@@ -47,7 +47,7 @@ void draw_food(SDL_Renderer *renderer, Point food, int offset_x, int offset_y) {
 
 int init_graphics(SDL_Window **window, SDL_Renderer **renderer) {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-        printf("Error initializing SDL: %s\n", SDL_GetError());
+        printf("Error al inicializar SDL: %s\n", SDL_GetError());
         return 0;
     }
 
@@ -55,7 +55,7 @@ int init_graphics(SDL_Window **window, SDL_Renderer **renderer) {
                                SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
     if (!*window) {
-        printf("Error creating window: %s\n", SDL_GetError());
+        printf("Error al crear window: %s\n", SDL_GetError());
         SDL_Quit();
         return 0;
     }
@@ -64,14 +64,14 @@ int init_graphics(SDL_Window **window, SDL_Renderer **renderer) {
         *window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
     );
     if (!*renderer) {
-        printf("Error creating renderer: %s\n", SDL_GetError());
+        printf("Error al crear renderer: %s\n", SDL_GetError());
         SDL_DestroyWindow(*window);
         SDL_Quit();
         return 0;
     }
 
     if (TTF_Init() == -1) {
-        printf("Error initializing SDL_ttf: %s\n", TTF_GetError());
+        printf("Error al inicializar SDL_ttf: %s\n", TTF_GetError());
         return 1;
     }
 
@@ -94,7 +94,7 @@ void render_score(SDL_Renderer *renderer, int score, int screen_width) {
     // Abrir la fuente (reemplaza con la ruta correcta)
     TTF_Font *font = TTF_OpenFont("fonts/Parkinsans-Medium.ttf", 50); 
     if (font == NULL) {
-        printf("Error loading font: %s\n", TTF_GetError());
+        printf("Error al cargar fuente: %s\n", TTF_GetError());
         return;
     }
 
@@ -108,7 +108,7 @@ void render_score(SDL_Renderer *renderer, int score, int screen_width) {
 
     // Verificar si la superficie fue creada correctamente
     if (textSurface == NULL) {
-        printf("Error creating text surface: %s\n", TTF_GetError());
+        printf("Error al crear la superficie de texto: %s\n", TTF_GetError());
         TTF_CloseFont(font);  // Cerrar la fuente
         return;
     }
@@ -116,7 +116,7 @@ void render_score(SDL_Renderer *renderer, int score, int screen_width) {
     // Crear la textura a partir de la superficie
     SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
     if (textTexture == NULL) {
-        printf("Error creating text texture: %s\n", SDL_GetError());
+        printf("Error al crear la textura del texto: %s\n", SDL_GetError());
         SDL_FreeSurface(textSurface);  // Liberar la superficie
         TTF_CloseFont(font);  // Cerrar la fuente
         return;
