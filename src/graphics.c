@@ -100,8 +100,6 @@ void render_game(SDL_Renderer *renderer, Point *snake, int snake_length, Point f
 
 // Dibuja el puntaje de la partida en juego
 void render_score(SDL_Renderer *renderer, TTF_Font *font, int score, int screen_width) {
-    if (!font) return; // Verifica que la fuente esté cargada (mirar)
-
     char scoreText[50];
     sprintf(scoreText, "Score: %d", score);
 

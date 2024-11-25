@@ -63,13 +63,13 @@ int main() {
             // Calcular la nueva posición de la cabeza
             Point new_head = {snake[0].x + dir_x, snake[0].y + dir_y};
 
-           // Mover la serpiente
+           // Mover la serpiente FUNCION
             for (int i = snake_length - 1; i > 0; i--) {
                 snake[i] = snake[i - 1];
             }
             snake[0] = new_head;
 
-            // Verificar colisiones
+            // Verificar colisiones 
             int collision_type = check_collision(
                 snake,
                 snake_length,
@@ -77,19 +77,12 @@ int main() {
                 WINDOW_GRID_HEIGHT / CELL_SIZE
             );
             
-            // Si colision_type devuelve verdadero entonces la serpiente chocho
+            // Si colision_type devuelve verdadero entonces la serpiente chocho FUNCION
             if (collision_type) {
-                if (collision_type == 1) {
-                    printf("***************  ¡¡GAME OVER!! Chocaste con la pared  ***************\n");
-                    printf("\n");
-                } else {
-                    printf("**********  ¡¡GAME OVER!! Parece que te mordiste la cola  ***********\n");
-                    printf("\n");
-                }
-                printf("=====================================================================\n");
-                printf("Ⅱ                          Final Score: %d                           Ⅱ\n", score);
-                printf("=====================================================================\n");
                 
+                // Indica con que superficie chocaste
+                collision_message(collision_type, score);
+               
                 // Actualiza el ranking con el jugador actual
                 update_ranking(ranking, &num_players, actual_player, score);
                 
@@ -100,16 +93,8 @@ int main() {
                 break;
             }
 
-            // Comprobar si se comió la comida
-            if (snake[0].x == food.x && snake[0].y == food.y) {
-                // Incrementar longitud de la serpiente correctamente
-                snake[snake_length] = snake[snake_length - 1]; // Nuevo segmento toma posición de la cola
-                snake_length++;
-                score++;
-
-                // Generar una nueva manzana
-                food = generate_food(snake, snake_length);
-            }
+            // Comprobar si se comió la comida FUNCION
+            (check_food(snake, &snake_length, &food, &score));
 
             // Renderizado general del juego
             render_game(renderer, snake, snake_length, food, offset_x, offset_y);

@@ -111,6 +111,37 @@ int check_collision(Point *snake, int length, int grid_width, int grid_height) {
     return 0; // No hay colisión
 }
 
+// Indica cual fue la colision
+void collision_message(int collision_type, int score) {
+    if (collision_type == 1) {
+        printf("***************  ¡¡GAME OVER!! Chocaste con la pared  ***************\n");
+        printf("\n");
+    } else if (collision_type == 2) {
+        printf("**********  ¡¡GAME OVER!! Parece que te mordiste la cola  ***********\n");
+        printf("\n");
+    }
+
+    printf("=====================================================================\n");
+    printf("Ⅱ                          Final Score: %d                           Ⅱ\n", score);
+    printf("=====================================================================\n");
+}
+
+// Chequea si se comio la manzana
+int check_food(Point *snake, int *snake_length, Point *food, int *score) {
+    if (snake[0].x == food->x && snake[0].y == food->y) {
+        // Incrementar longitud de la serpiente
+        snake[*snake_length] = snake[*snake_length - 1]; // Nuevo segmento toma posición de la cola
+        (*snake_length)++;
+        (*score)++;
+
+        // Generar nueva comida
+        *food = generate_food(snake, *snake_length);
+
+        return 1; // Indica que se comió la comida
+    }
+    return 0; // No se comió la comida
+}
+
 // Punto donde se generara la manzana
 Point generate_food(Point *snake, int length) {
     Point food;
