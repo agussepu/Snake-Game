@@ -1,2 +1,3 @@
 tomi 3
 agus 0
+a 0

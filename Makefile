@@ -18,6 +18,10 @@ EXEC = snake_game # Nombre del ejecutable
 # Regla por defecto (cuando solo se ejecuta make)
 all: $(EXEC)
 
+# Regla para crear el directorio build si no existe
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
 # Regla para crear el ejecutable
 $(EXEC): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBS)  # Se asegura de enlazar SDL2 y SDL2_ttf
