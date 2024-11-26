@@ -1,5 +1,6 @@
 #include "game_logic.h"
 
+//TOMI
 // Bienvenida y nombre del usuario
 void welcome(char *name) {
     char selection;
@@ -40,6 +41,7 @@ void welcome(char *name) {
     }
 }
 
+//TOMI
 // Reinicia las variables del juego
 void reset_game_state(Point *snake, int *snake_length, Point *food, int *dir_x, int *dir_y, int *score) {
 
@@ -63,12 +65,14 @@ void reset_game_state(Point *snake, int *snake_length, Point *food, int *dir_x, 
     *score = 0;
 }
 
+//AGUS
 //Teclas de movimiento de snake (flechitas y salir)
 void input(int *running, int *dir_x, int *dir_y) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
             *running = 0;
+            //
         } else if (event.type == SDL_KEYDOWN) {
             switch (event.key.keysym.sym) {
                 case SDLK_UP:
@@ -88,6 +92,7 @@ void input(int *running, int *dir_x, int *dir_y) {
     }
 }
 
+//AGUS
 // Mueve la serpiente
 void move_snake(Point *snake, int snake_length, Point new_head) {
     for (int i = snake_length - 1; i > 0; i--) {
@@ -96,6 +101,7 @@ void move_snake(Point *snake, int snake_length, Point new_head) {
     snake[0] = new_head; 
 }
 
+//AGUS
 // Colision
 int check_collision(Point *snake, int length, int grid_width, int grid_height) {
     // Verificar colisión con los bordes
@@ -130,6 +136,7 @@ void collision_message(int collision_type, int score) {
     printf("=====================================================================\n");
 }
 
+//TOMI
 // Chequea si se comio la manzana
 int check_food(Point *snake, int *snake_length, Point *food, int *score) {
     if (snake[0].x == food->x && snake[0].y == food->y) {

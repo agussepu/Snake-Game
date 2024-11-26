@@ -8,6 +8,7 @@
 #include <time.h>
 
 int main() {
+    // TOMI
     srand(time(NULL));
 
     const char *archive_ranking = "data/ranking.txt";
@@ -20,6 +21,7 @@ int main() {
     char actual_player[NOMBRE_LARGO];
     welcome(actual_player);
 
+    // AGUS
     //Bucle Principal para jugar varias veces
     int again = 1; // Indicardor para continuar jugando
     while(again)
@@ -42,6 +44,7 @@ int main() {
         int offset_x = (WINDOW_WIDTH - WINDOW_GRID_WIDTH) / 2;
         int offset_y = (WINDOW_HEIGHT - WINDOW_GRID_HEIGHT) / 2;
 
+        // TOMI
         // Variables del juego
         Point snake[100]; //posicion (x,y) de cada segemento de la serpiente
         int snake_length;
@@ -52,6 +55,7 @@ int main() {
         // Reiniciar las variables del juego para volver a jugar
         reset_game_state(snake, &snake_length, &food, &dir_x, &dir_y, &score);
 
+        // AGUS
         // Bucle de la partida actual
         int running = 1;    
         while (running) {
@@ -83,7 +87,7 @@ int main() {
                 update_ranking(ranking, &num_players, actual_player, score);
                 
                 //Liberar los recursos del sistema (al chocar no necesitamos mas el juego)
-                cleanup_graphics(window, renderer, font);;
+                cleanup_graphics(window, renderer, font);
 
                 running = 0; // termina el bucle de la partida actual
                 break;
